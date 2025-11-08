@@ -5,6 +5,8 @@ import { toBase64 } from "../utils/fileUtils";
 const PROMPT_TEMPLATE = `**Task:** Create a hyperrealistic, professional fashion studio photograph for a Vogue-style editorial.
 
 **Primary Subject:** A {{mannequin_description}} wearing an outfit. The outfit must be an **exact, 100% accurate replication** of the one in the uploaded reference images. Preserve every detail: fabric texture, embroidery, lace, transparency, and fit.
+- **Pose:** {{mannequin_pose_text}}
+{{accessories_text}}
 
 **Composition & Framing:**
 - This MUST be a **full-body shot**, capturing the mannequin from head to toe.
@@ -14,7 +16,7 @@ const PROMPT_TEMPLATE = `**Task:** Create a hyperrealistic, professional fashion
 **Lighting & Atmosphere:**
 - **Lighting:** Cinematic, multi-point studio lighting. Use a soft key light, gentle fill light, and a warm back rim light (glow) to create depth and highlight the mannequin's contours.
 - **Background:** A luxury, fashion-oriented environment described as: {{session_style}}.
-- **Branding:** Integrate a softly glowing neon sign that reads “{{brand_name}}”. It should be positioned {{neon_position}} and blended naturally into the scene's lighting.
+- **Branding:** Integrate a softly glowing neon sign that reads “{{brand_name}}”. **The neon color should intelligently complement the outfit's color palette.** It should be positioned {{neon_position}} and blended naturally into the scene's lighting.
 
 **Technical Specifications:**
 - **Camera:** Emulate a high-end DSLR shot (e.g., Canon EOS R5) with a sharp prime lens (e.g., 85mm f/1.2).
@@ -56,6 +58,24 @@ const getCameraAngleText = (angle: string): string => {
     }
 };
 
+const getMannequinPoseText = (pose: string): string => {
+    switch (pose) {
+        case 'Standing Power Pose':
+            return 'The mannequin is in a confident, strong standing power pose, with feet slightly apart and a straight posture.';
+        case 'Elegant Walking Motion':
+            return 'The mannequin is captured in mid-stride, conveying an elegant walking motion as if on a runway.';
+        case 'Relaxed Seated Pose':
+            return 'The mannequin is in a relaxed, natural seated pose on a minimalist stool or chair that complements the scene.';
+        case 'Dynamic Turning Pose':
+            return 'The mannequin is captured in a dynamic turning motion, showcasing the outfit\'s flow and movement.';
+        case 'Artistic Abstract Pose':
+            return 'The mannequin is in an artistic, abstract, high-fashion pose that is unconventional and visually striking.';
+        case 'Standard Studio Pose':
+        default:
+            return 'The mannequin is in a standard, neutral studio pose, standing straight and facing forward.';
+    }
+};
+
 
 export async function generateFashionShoot(formData: FormData, referenceImages: ImageFile[]): Promise<string[]> {
   if (!process.env.API_KEY) {
@@ -65,10 +85,15 @@ export async function generateFashionShoot(formData: FormData, referenceImages: 
   
   const mannequinDescription = getMannequinDescription(formData.mannequin_type);
   const cameraAngleText = getCameraAngleText(formData.camera_angle);
+  const mannequinPoseText = getMannequinPoseText(formData.mannequin_pose);
   const outfitColorText = formData.outfit_color ? `If an outfit color is provided, recolor the outfit to ${formData.outfit_color} (apply to all fabrics consistently).` : "The outfit color should not be changed.";
+  const accessoriesText = formData.accessories ? `- **Accessories:** The mannequin should also be styled with the following accessories: ${formData.accessories}. Integrate them naturally.` : "";
+
 
   let prompt = PROMPT_TEMPLATE
     .replace('{{mannequin_description}}', mannequinDescription)
+    .replace('{{mannequin_pose_text}}', mannequinPoseText)
+    .replace('{{accessories_text}}', accessoriesText)
     .replace('{{camera_angle_text}}', cameraAngleText)
     .replace('{{brand_name}}', formData.brand_name)
     .replace('{{session_style}}', formData.session_style)

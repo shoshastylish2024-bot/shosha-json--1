@@ -12,8 +12,10 @@ const App: React.FC = () => {
     { id: 'brand_name', label: 'Brand Name (Neon Sign)', type: 'text', placeholder: 'e.g. Vega', required: true },
     { id: 'session_style', label: 'Choose Photo Session Style', type: 'dropdown', options: ["Luxury Studio (Silk Curtains + Perfume Bottles)", "Modern Neon Lounge (Glossy Floors + Pink Neon)", "Dreamy Pastel Bedroom (Fairy Lights + Plush Decor)", "Minimal White Studio (Seamless + Gradient Light)", "Soft Glamour Lighting (Back Rim + Glow)", "Elegant Marble Room (Soft daylight + reflective floor)", "Chic Apartment Loft (Neutral tones + natural light)", "Vintage Blush Studio (Warm filter + soft shadows)", "Industrial Chic Loft (Exposed Brick + Metal Pipes)", "Futuristic Sci-Fi Set (Holographic Panels + Blue LEDs)", "Enchanted Forest (Misty Woods + Sunbeams)", "Opulent Rococo Palace (Gold Gilt + Velvet Drapes)", "Urban Rooftop at Golden Hour (Cityscape + Warm Sunset)", "Surrealist Dreamscape (Floating Objects + Impossible Geometry)", "Art Deco Speakeasy (Geometric Patterns + Dim Lighting)", "Bohemian Desert Oasis (Macrame + Cacti + Sand Dunes)"] },
     { id: 'mannequin_type', label: 'Mannequin Color', type: 'dropdown', options: ["Gold", "White", "Silver Chrome", "Rose Gold", "Matte Black"] },
+    { id: 'mannequin_pose', label: 'Mannequin Pose', type: 'dropdown', options: ["Standard Studio Pose", "Standing Power Pose", "Elegant Walking Motion", "Relaxed Seated Pose", "Dynamic Turning Pose", "Artistic Abstract Pose"] },
     { id: 'camera_angle', label: 'Camera Angle', type: 'dropdown', options: ["Full-Body Front View", "Dynamic Full-Body Angles", "Full-Body High Angle", "Full-Body Low Angle", "Full-Body Dutch Angle"] },
     { id: 'outfit_color', label: 'Outfit Color (Optional)', type: 'text', placeholder: 'e.g. Baby Blue or #ffc9a7', required: false },
+    { id: 'accessories', label: 'Add Accessories (Optional)', type: 'text', placeholder: 'e.g. gold necklace, black leather handbag', required: false },
     { id: 'aspect_ratio', label: 'Aspect Ratio', type: 'dropdown', options: ["1:1", "3:4", "9:16", "16:9"] },
     { id: 'neon_position', label: 'Neon Position', type: 'dropdown', options: ["behind", "beside", "above"] },
     { id: 'quality', label: 'Quality', type: 'dropdown', options: ["standard", "high", "ultra"] },
@@ -30,6 +32,8 @@ const App: React.FC = () => {
     image_count: 1,
     mannequin_type: 'Gold',
     camera_angle: 'Full-Body Front View',
+    mannequin_pose: 'Standard Studio Pose',
+    accessories: '',
   });
   const [referenceImages, setReferenceImages] = useState<ImageFile[]>([]);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);

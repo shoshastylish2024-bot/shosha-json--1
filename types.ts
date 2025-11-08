@@ -1,4 +1,3 @@
-
 export interface FormData {
   brand_name: string;
   session_style: string;
@@ -9,6 +8,8 @@ export interface FormData {
   image_count: number;
   mannequin_type: string;
   camera_angle: string;
+  mannequin_pose: string;
+  accessories: string;
 }
 
 export interface ImageFile {
